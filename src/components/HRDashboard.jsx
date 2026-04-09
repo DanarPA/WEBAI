@@ -1,82 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function HRDashboard() {
-  // Simulasi data SOP dari backend
-  const sopFiles = [
-    { 
-      id: 1, 
-      title: "SOP Perekrutan Karyawan Layanan", 
-      version: "v2.1", 
-      date: "12 Maret 2026", 
-      category: "Recruitment" 
-    },
-    { 
-      id: 2, 
-      title: "Prosedur Onboarding Staff Baru", 
-      version: "v1.0", 
-      date: "05 Februari 2026", 
-      category: "Training" 
-    },
-    { 
-      id: 3, 
-      title: "Kebijakan Cuti & Izin Operasional", 
-      version: "v3.2", 
-      date: "20 Januari 2026", 
-      category: "Operational" 
-    }
-  ];
+export default function HRIntelligence() {
+  const [isSidebarOpen, setSidebarOpen] = useState(true); // Default terbuka di desktop
+  const [activeTab, setActiveTab] = useState('recruitment');
 
   return (
-    <div className="flex-1 bg-[#0f172a] p-8 overflow-y-auto text-slate-200">
-      {/* Header Halaman */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white">HR - Dokumen SOP</h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Daftar panduan standar operasional untuk divisi Human Resources.
-        </p>
-      </div>
-
-      {/* Kontainer Kartu SOP */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sopFiles.map((file) => (
-          <div 
-            key={file.id} 
-            className="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl hover:border-red-500/50 transition-all group shadow-lg"
-          >
-            {/* Ikon File */}
-            <div className="w-12 h-12 bg-red-600/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-600/20 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-
-            {/* Informasi File */}
-            <h3 className="font-bold text-white text-lg mb-1 leading-tight">
-              {file.title}
-            </h3>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">
-                {file.category}
-              </span>
-              <span className="text-[10px] text-slate-500">
-                Ver {file.version}
-              </span>
-            </div>
-
-            <div className="text-[11px] text-slate-500 mb-6 italic">
-              Terakhir diperbarui: {file.date}
-            </div>
-
-            {/* Tombol Action */}
-            <button className="w-full bg-slate-800 hover:bg-red-600 text-white py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Download PDF
-            </button>
+    <div className="min-h-screen bg-[#0f172a] flex flex-col lg:flex-row text-slate-200 overflow-hidden font-sans">
+      
+      {/* --- MAIN CONTENT AREA --- */}
+      <div className={`flex-1 p-4 md:p-8 overflow-y-auto h-screen custom-scrollbar transition-all duration-300`}>
+        <header className="mb-8 flex justify-between items-start gap-4">
+          <div>
+            <h1 className="text-3xl font-black italic uppercase tracking-tighter">
+              Open<span className="text-indigo-500">Claw</span> HR
+            </h1>
+            <p className="text-[10px] text-slate-500 uppercase tracking-[0.4em]">Integrated Agentic System</p>
           </div>
-        ))}
+          
+          <div className="flex gap-3">
+            {/* Tombol Toggle Chatbot - Muncul kalau Sidebar lagi ketutup */}
+            {!isSidebarOpen && (
+              <button 
+                onClick={() => setSidebarOpen(true)}
+                className="bg-indigo-600 hover:bg-indigo-500 p-3 rounded-2xl shadow-[0_0_20px_rgba(79,70,229,0.3)] transition-all animate-in fade-in zoom-in"
+                title="Buka AI Assistant"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+              </button>
+            )}
+            <div className="hidden md:flex bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-xl items-center gap-3">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ollama: Online</span>
+            </div>
+          </div>
+        </header>
+
+        {/* TAB NAVIGATION */}
+        <div className="flex gap-6 border-b border-slate-800 mb-8 overflow-x-auto pb-2">
+          {['Recruitment', 'Pending Approvals', 'System Status'].map((tab) => (
+            <button 
+              key={tab}
+              onClick={() => setActiveTab(tab.toLowerCase().replace(' ', ''))}
+              className={`text-[10px] font-black uppercase tracking-widest pb-2 transition-all whitespace-nowrap ${
+                activeTab === tab.toLowerCase().replace(' ', '') ? 'text-indigo-500 border-b-2 border-indigo-500' : 'text-slate-500'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* CONTENT PLACEHOLDER (Sesuai Tab) */}
+        <div className="bg-slate-800/10 border border-slate-800 rounded-[40px] p-8 min-h-[400px]">
+           <p className="text-[10px] text-slate-500 italic">Content for {activeTab} view goes here...</p>
+        </div>
       </div>
+
+      {/* --- SIDEBAR: AGENTIC ASSISTANT (COLLAPSIBLE) --- */}
+      <div className={`
+        fixed lg:relative inset-y-0 right-0 bg-[#0f172a] border-l border-slate-800/50 flex flex-col z-[60]
+        transition-all duration-300 ease-in-out
+        ${isSidebarOpen ? 'w-80 md:w-96 translate-x-0' : 'w-0 translate-x-full lg:hidden'}
+      `}>
+        
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-slate-800/50 flex items-center justify-between bg-slate-800/5">
+          <div className="flex items-center gap-3 overflow-hidden whitespace-nowrap">
+             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shrink-0">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+             </div>
+             <h3 className="text-[11px] font-black uppercase tracking-widest text-indigo-400">Agentic Assistant</h3>
+          </div>
+          <button 
+            onClick={() => setSidebarOpen(false)}
+            className="p-2 hover:bg-slate-800 rounded-lg text-slate-500 transition-colors"
+            title="Tutup Sidebar"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        
+        {/* Chat Area */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar overflow-x-hidden">
+          <div className="bg-slate-800/40 border border-slate-800 p-4 rounded-3xl rounded-tl-none text-[11px] leading-relaxed text-slate-300">
+             Halo! Saya sudah memproses <strong>Pipa Operasional</strong> hari ini. Ada draf kontrak yang perlu Anda review?
+          </div>
+        </div>
+
+        {/* Input Area */}
+        <div className="p-6 bg-[#0f172a] border-t border-slate-800/50">
+          <input 
+            type="text" 
+            placeholder="Command AI..." 
+            className="w-full bg-slate-800/30 border border-slate-800 rounded-2xl py-4 px-5 text-[11px] focus:outline-none focus:border-indigo-500/50"
+          />
+        </div>
+      </div>
+
+      {/* OVERLAY MOBILE (Klik di luar buat nutup) */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 z-[55] lg:hidden" 
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
+
     </div>
   );
 }
